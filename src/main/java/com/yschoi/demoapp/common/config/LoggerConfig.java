@@ -42,7 +42,7 @@ public class LoggerConfig {
 	@Autowired
 	public AdmLogService admLogService;
 
-	@Pointcut("execution(* com.lkictdev.demoapp.controller.*.*Controller.*(..))")
+	@Pointcut("execution(* com.yschoi.demoapp.controller.*.*Controller.*(..))")
 	public void controllerPointcut() {}
 	
 	@Pointcut("within(@org.springframework.web.bind.annotation.RestControllerAdvice *)")
