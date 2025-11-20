@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdmLogin">
+	<!-- 세션 ID 채번 -->
+	<select id="ADM_SESSION_PROC" statementType="CALLABLE">
+		CALL PR_GET_KEY('SS', #{SESSION_ID, mode=OUT, jdbcType=VARCHAR})
+	</select>
+	
+	<!-- 비밀번호 일치여부 검사 -->
+	<select id="ADM_LOGIN_PW" resultType="java.util.HashMap">
+		SELECT USER_ID
+			 , USER_NM
+			 , USE_YN
+		FROM ADM_USER
+		WHERE 1=1
+		  AND USER_ID = #{USER_ID}
+		  AND PASSWORD = CRYPTO.ENCRYPT_AES(#{PASSWORD})
+	</select>
+		
+	<!-- 최근 로그인 일시 갱신 및 세션 등록 -->
+	<update id="ADM_UPDATE_LOGIN_SESSION">
+		BEGIN
+			UPDATE ADM_USER
+			SET RECENT_LOGIN_DT = SYSDATE
+			WHERE USER_ID = #{USER_ID};
+			
+			INSERT INTO 
+				ADM_SESSION (
+					SESSION_ID
+				  , USER_ID
+				  , INS_DT
+				  , INS_ID
+				) VALUES (
+					#{SESSION_ID}
+				  , #{USER_ID}
+				  , SYSDATE
+				  , #{USER_ID});
+		END;
+	</update>
+</mapper>
