@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdmLog">
+	<!-- 로그 ID 채번 -->
+	<select id="ADM_LOG_PROC" statementType="CALLABLE">
+		CALL PR_GET_KEY('LG', #{LOG_ID, mode=OUT, jdbcType=VARCHAR})
+	</select>
+	
+	<!-- API 요청 기록 로그 insert -->
+	<insert id="ADM_LOG_INSERT_REQ">
+		INSERT
+			INTO ADM_SYSTEM_LOG (
+				LOG_ID
+			  , LOG_TYPE
+			  , SERVICE_NM
+			  , URI
+			  , HTTP_METHOD
+			  , USER_LANG
+			  , RES_CODE
+			  , REQ_PARAM
+			  , RES_PARAM
+			  , EXCEPTION_MSG
+			  , ERROR_TRACE
+			  , INS_DT
+			  , INS_ID
+			  , INS_IP
+			) VALUES (
+				#{LOG_ID}
+			  , 'REQUEST'
+			  , #{SERVICE_NM}
+			  , #{URI}
+			  , #{HTTP_METHOD}
+			  , #{USER_LANG}
+			  , #{RES_CODE}
+			  , #{REQ_PARAM}
+			  , #{RES_PARAM}
+			  , #{EXCEPTION_MSG}
+			  , #{ERROR_TRACE}
+			  , SYSDATE
+			  , #{USER_ID}
+			  , #{USER_IP})
+	</insert>
+</mapper>
