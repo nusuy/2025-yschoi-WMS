@@ -44,4 +44,11 @@ public class AdmLoginDao {
 	public int updateLoginSession(Map<String, Object> paramMap) {
 		return sqlSession.update("ADM_UPDATE_LOGIN_SESSION", paramMap);
 	}
+	
+	/**
+	 * 세션 ID 검증
+	 */
+	public Map<String, Object> verifySessionId(String sessionId) {
+		return sqlSession.selectOne("ADM_SESSION_VERIFY");
+	}
 }

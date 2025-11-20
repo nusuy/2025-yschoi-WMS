@@ -37,4 +37,15 @@
 				  , #{USER_ID});
 		END;
 	</update>
+	
+	<!-- 세션 Id 검증 -->
+	<select id="ADM_SESSION_VERIFY" parameterType="String" resultType="java.util.HashMap">
+		SELECT INS_ID
+			 , CASE WHEN SYSDATE BETWEEN INS_DT 
+			 						 AND INS_DT + TO_NUMBER(FN_GET_SYSTEM_CD('SESSION_EXPIRE_M'))/(24*60) THEN '0'
+			 		 ELSE '1'
+			 	END AS IS_EXPIRED
+		  FROM ADM_SESSION
+		 WHERE SESSION_ID = #{sessionId}
+	</select>
 </mapper>

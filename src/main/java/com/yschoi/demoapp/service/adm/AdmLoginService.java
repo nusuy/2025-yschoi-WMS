@@ -68,7 +68,9 @@ public class AdmLoginService {
 	 * @param sessionId
 	 * @return resultMap (USER_ID, IS_EXPIRED)
 	 */
-	// TODO
+	public Map<String, Object> verifySessionId(String sessionId) throws Exception {
+		return admLoginDao.verifySessionId(sessionId);
+	}
 	
 	/**
 	 * 로그아웃
