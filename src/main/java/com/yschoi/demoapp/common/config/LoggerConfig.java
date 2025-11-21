@@ -61,7 +61,7 @@ public class LoggerConfig {
 		String controllerPath = "";
 		Object handler = request.getAttribute(HandlerMapping.BEST_MATCHING_HANDLER_ATTRIBUTE);
 		if (handler instanceof HandlerMethod handlerMethod) {
-			controllerPath = handlerMethod.getBeanType().getName().replace("com.lkictdev.demoapp.controller.", "");
+			controllerPath = handlerMethod.getBeanType().getName().replace("com.yschoi.demoapp.controller.", "");
 		}
 
 		try {
@@ -93,8 +93,9 @@ public class LoggerConfig {
 			
 			paramMap.put("RES_CODE", resultMap.get("status"));
 			paramMap.put("EXCEPTION_MSG", resultMap.get("message"));
-			paramMap.put("RES_PARAM", CommonUtil.subStrLen(resultMap.get("data").toString(), 255));
-						
+			if (resultMap.get("data") != null)
+				paramMap.put("RES_PARAM", CommonUtil.subStrLen(resultMap.get("data").toString(), 255));
+			
 			return proceed;
 		} catch (Exception e) {
 			log.info(e.getMessage());
